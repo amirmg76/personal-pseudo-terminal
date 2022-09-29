@@ -2,6 +2,7 @@ package main
 
 import (
 	"bufio"
+	"math/rand"
 	"os"
 	"fmt"
 	"io"
@@ -23,6 +24,8 @@ func main() {
 		switch cmd {
 		case "exit":
 			cmdFunc = exitCmd
+		case "shuffle":
+			cmdFunc = shuffleCmd
 		}
 
 		if cmdFunc == nil {
@@ -40,4 +43,15 @@ func main() {
 func exitCmd(w io.Writer, args []string) bool {
 	fmt.Fprintf(w, "so long and thanks for all the fish\n")
 	return true
+}
+
+func shuffleCmd(w io.Writer, args []string) bool {
+	rand.Shuffle(len(args), func(i, j int){
+		args[i], args[j] = args[j], args[i]
+	})
+	for i := range args {
+		fmt.Fprintf(w, "%s ", args[i])
+	}
+	fmt.Fprintln(w)
+	return false
 }
