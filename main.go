@@ -27,7 +27,9 @@ func main() {
 		case "shuffle":
 			cmdFunc = shuffleCmd
 		case "echo":
-			cmdFunc = echoFunc
+			cmdFunc = echoCmd
+		case "print":
+		    cmdFunc = printCmd
 		}
 
 		if cmdFunc == nil {
@@ -61,6 +63,26 @@ func shuffleCmd(w io.Writer, args []string) bool {
 func echoCmd(w io.Writer, args []string) bool {
 	for i := range args {
 		fmt.Fprintf(w, "%s ", args[i])
+	}
+	fmt.Fprintln(w)
+	return false
+}
+
+func printCmd(w io.Writer, args []string) bool {
+	if len(args) != 1 {
+		fmt.Fprintln(w, "please specify only one file")
+		return false
+	}
+	file, err := os.Open(args[0])
+	if err != nil {
+		fmt.Fprintf(w, "Cannot open %s\nError message: %s\n", args[0], err)
+		fmt.Fprintln(w)
+		return false
+	} 
+	defer file.Close()
+	if _, err := io.Copy(w, file); err != nil {
+		fmt.Fprintln(w, "Cannot print %s\nError message: %s\n", args[0], err)
+		return false
 	}
 	fmt.Fprintln(w)
 	return false
