@@ -4,6 +4,7 @@ import (
 	"bufio"
 	"os"
 	"fmt"
+	"strings"
 )
 
 func main() {
@@ -15,9 +16,12 @@ func main() {
 		fmt.Print("you wrote ")
 		w.Write(s.Bytes())
 		fmt.Println()
-		message := string(s.Bytes())
-		if message == "exit" {
+		args := strings.Split(string(s.Bytes()), " ")
+		cmd := args[0]
+		args = args[1:]
+		if cmd == "exit" {
 			return
 		}
+		
 	}
 }
