@@ -26,6 +26,8 @@ func main() {
 			cmdFunc = exitCmd
 		case "shuffle":
 			cmdFunc = shuffleCmd
+		case "echo":
+			cmdFunc = echoFunc
 		}
 
 		if cmdFunc == nil {
@@ -49,6 +51,14 @@ func shuffleCmd(w io.Writer, args []string) bool {
 	rand.Shuffle(len(args), func(i, j int){
 		args[i], args[j] = args[j], args[i]
 	})
+	for i := range args {
+		fmt.Fprintf(w, "%s ", args[i])
+	}
+	fmt.Fprintln(w)
+	return false
+}
+
+func echoCmd(w io.Writer, args []string) bool {
 	for i := range args {
 		fmt.Fprintf(w, "%s ", args[i])
 	}
