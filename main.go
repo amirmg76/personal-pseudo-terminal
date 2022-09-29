@@ -19,8 +19,9 @@ func main() {
 		args := strings.Split(string(s.Bytes()), " ")
 		cmd := args[0]
 		args = args[1:]
-		if cmd == "exit" {
-			return
+		switch cmd {
+		case "exit":
+			return 
 		}
 		
 	}
